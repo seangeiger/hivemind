@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from assets.models import Asset
 from rest_framework.authtoken.models import Token
+from portfolio.models import Portfolio
 
 
 class Profile(models.Model):
@@ -15,11 +16,13 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        profile = Profile.objects.create(user=instance)
-        profile.total_investment = profile.original_investment
-        profile.save()
+        # profile = Profile.objects.create(user=instance)
+        # profile.total_investment = profile.original_investment
+        # profile.save()
         Token.objects.create(user=instance)
-
+        portfolio = Portfolio.objects.get()
+        portfolio.uninvested += profile.original_investment
+        portfolio.save()
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):

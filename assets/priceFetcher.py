@@ -1,8 +1,13 @@
 #Fetches current price of select coin in reference to USD
 import krakenex
 import datetime
+from background_task import background
 from assets.models import Asset
+
+
+@background(schedule=0, repeat=60)
 def updatePrices():
+    print("Updating prices")
 
     assets = Asset.objects.all()
 
@@ -12,6 +17,10 @@ def updatePrices():
         a.price = getPrice(k,a.api_name)
         print(a.api_name,a.price)
         a.save()
+
+
+updatePrices()
+
 
 def getPrice(k,coin = 'XXBTZUSD'):
     results = k.query_public("Ticker",{'pair':coin})['result'][coin]

@@ -6,3 +6,4 @@ whitenoise==3.2
 krakenex==1.0.0
 apscheduler
 djangorestframework
+django-background-tasks

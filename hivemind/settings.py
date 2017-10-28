@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'portfolio.apps.PortfolioConfig',
     'users.apps.UsersConfig',
     'assets.apps.AssetsConfig',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'background_task',
 ]
 
 REST_FRAMEWORK = {
