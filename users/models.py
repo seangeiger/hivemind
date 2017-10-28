@@ -2,18 +2,23 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from assets.models import Asset
+from rest_framework.authtoken.models import Token
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    total_investments = models.DecimalField(max_digits=15, decimal_places=2)
+    total_investment = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     original_investment = models.DecimalField(max_digits=15, decimal_places=2)
 
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        profile = Profile.objects.create(user=instance)
+        profile.total_investment = profile.original_investment
+        profile.save()
+        Token.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
@@ -33,3 +38,5 @@ class Preference(models.Model):
         (BEE, 'Bee'),
     )
     preference = models.CharField(max_length=5, choices=PREF_CHOICES, blank=False, default=BEE)
+
+    asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
