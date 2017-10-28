@@ -10,6 +10,7 @@ def updatePrices():
 
     for a in assets:
         a.price = getPrice(k,a.api_name)
+        print(a.api_name,a.price)
         a.save()
 
 def getPrice(k,coin = 'XXBTZUSD'):
