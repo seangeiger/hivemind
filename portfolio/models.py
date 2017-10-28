@@ -6,6 +6,7 @@ from assets.models import Asset
 
 class Portfolio(models.Model):
 	totalInvestment = models.DecimalField(max_digits = 15, decimal_places = 2)
+	uninvested = models.DecimalField(max_digits = 15, decimal_places = 2)
 
 class Position(models.Model):
 	portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)

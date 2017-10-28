@@ -10,7 +10,7 @@ from portfolio.models import Portfolio
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     total_investment = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    original_investment = models.DecimalField(max_digits=15, decimal_places=2)
+    original_investment = models.DecimalField(max_digits=15, decimal_places=2,default = 0)
 
 
 @receiver(post_save, sender=User)
