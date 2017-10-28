@@ -13,10 +13,10 @@ def computePortfolioUpdate():
 
     currentAssetInvestments = {p.asset : p.asset.price * p.assetAmount for p in positions}
 
-    portfolioValueInvested = computePortfolioValue(portfolio, assets)
+    portfolioValueInvested = computePortfolioInvestedValue(portfolio, positions)
     portfolioValueTotal = portfolioValueInvested + portfolio.uninvested
 
-    updateProfileInvestmentValues(portfolio.totalInvestment, portfolioValueInvested, portfolioValueTotal)
+    updateProfileInvestmentValues(portfolio, users, portfolioValueInvested, portfolioValueTotal)
     for u in users:
         u.refresh_from_db()
 
@@ -34,14 +34,13 @@ def computePortfolioUpdate():
             assetDecisions[ass] = assetDecisions[ass]/totalAssetDecisions
             if assetDecisions[ass] < 0:
                 assetDecisions[ass] = 0
-        desiredAssetInvestments = {ass : assetDecisions[ass] * portfolioValue for ass in assets}
+        desiredAssetInvestments = {ass : assetDecisions[ass] * portfolioValueTotal for ass in assets}
 
         assetValueChanges = {ass : desiredAssetInvestments[ass] - currentAssetInvestments[ass] for ass in assets}
 
     updatePortfolioTotalInvestment(portfolio, desiredAssetInvestments, portfolioValueTotal)
+    updatePositions(positions, desiredAssetInvestments)
     return assetValueChanges
-
-
 
 def computeAssetDecision(asset, users, totalInvestment):
     totalVote = 0
@@ -60,5 +59,49 @@ def computeAssetDecision(asset, users, totalInvestment):
 
     return totalVote
 
-def computePortfolioValue(portfolio, assets):
-    #multiply asset values by asset amounts
+def computePortfolioInvestedValue(portfolio, positions):
+    totalInvestment = 0
+    for p in positions:
+        totalInvestment += p.assetAmount + p.asset.price
+    return totalInvestment
+
+
+def updatePortfolioTotalInvestment(portfolio, desiredInvestments, newTotalValue):
+    totalInvestment = 0
+    for a in desiredInvestments:
+        totalInvestment += desiredInvestments[a]
+    portfolio.totalInvestment = totalInvestment
+    if totalInvestment == 0:
+        portfolio.uninvested = newTotalValue
+    else:
+        portfolio.uninvested = 0
+    portfolio.save()
+
+
+def updateProfileInvestmentValues(portfolio, users, newInvested, newTotal):
+    previosInvestment = portfolio.totalInvestment
+    if(previousInvestment == 0):
+        for u in users:
+            if u.profile.total_investment == 0:
+                u.profile.total_investment = u.profile.original_investment
+                u.save()
+        return
+    for u in users:
+        investmentPercentage = u.profile.total_investment / previousInvestment
+        u.profile.total_investment = investmentPercentage*newTotal
+        if investmentPercentage == 0:
+            u.profile.total_investment = u.profile.original_investment
+        u.save()
+
+def updatePositions(positions, desiredInvestments):
+    totalInvestment = 0
+    for a in desiredInvestments:
+        totalInvestment += desiredInvestments[a]
+
+    for p in positions:
+        desiredValue = desiredInvestments[p.asset]
+        desiredAmount = desiredValue / p.asset.price
+        p.assetAmount = desiredAmount
+
+        p.portfolioPercentage = desiredValue/totalInvestment
+        p.save()
