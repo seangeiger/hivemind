@@ -23,5 +23,5 @@ class UserSerializer(serializers.ModelSerializer):
 
         user.refresh_from_db()
         user.profile.original_investment = validated_data['initial']
-        
+
         return user
