@@ -2,11 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from assets.models import Asset
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    total_investments = models.DecimalField(max_digits=15, decimal_places=2)
+    total_investment = models.DecimalField(max_digits=15, decimal_places=2)
     original_investment = models.DecimalField(max_digits=15, decimal_places=2)
 
 
@@ -33,3 +34,5 @@ class Preference(models.Model):
         (BEE, 'Bee'),
     )
     preference = models.CharField(max_length=5, choices=PREF_CHOICES, blank=False, default=BEE)
+
+    asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
