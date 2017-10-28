@@ -11,33 +11,36 @@ def computePortfolioUpdate():
     portfolio = Portfolio.objects.get()
     positions = Position.objects.all()
 
-    totalInvestment = 0.0
-    for u in users:
-        totalInvestment += u.totalinvestments
-
     currentAssetInvestments = {p.asset : p.asset.price * p.assetAmount for p in positions}
 
-    portfolioValue = computePortfolioValue(portfolio)
+    portfolioValueInvested = computePortfolioValue(portfolio, assets)
+    portfolioValueTotal = portfolioValueInvested + portfolio.uninvested
 
-    assetDecisions = {ass : computeAssetDecision(ass, users, totalInvestment) for ass in assets}
+    updateProfileInvestmentValues(portfolio.totalInvestment, portfolioValueInvested, portfolioValueTotal)
+    for u in users:
+        u.refresh_from_db()
+
+    assetDecisions = {ass : computeAssetDecision(ass, users, portfolioValueTotal) for ass in assets}
     totalAssetDecisions = 0
     for ass in assetDecisions:
         if assetDecisions[ass] > 0:
             totalAssetDecisions += assetDecisions[ass]
     if totalAssetDecisions == 0:
         #pull out
-        desiredAssetInvestments = {ass : 0 for ass in assetDecisions}
+        assetValueChanges = {ass : currentAssetInvestments[ass] * -1 for ass in assets}
+        desiredAssetInvestments = {ass : 0 for ass in assets}
     else:
         for ass in assetDecisions:
             assetDecisions[ass] = assetDecisions[ass]/totalAssetDecisions
             if assetDecisions[ass] < 0:
                 assetDecisions[ass] = 0
-        desiredAssetInvestments = {ass : assetDecisions[ass] * portfolioValue for ass in assetDecisions}
+        desiredAssetInvestments = {ass : assetDecisions[ass] * portfolioValue for ass in assets}
 
-        assetValueChanges = {}
+        assetValueChanges = {ass : desiredAssetInvestments[ass] - currentAssetInvestments[ass] for ass in assets}
 
+    updatePortfolioTotalInvestment(portfolio, desiredAssetInvestments, portfolioValueTotal)
+    return assetValueChanges
 
-    
 
 
 def computeAssetDecision(asset, users, totalInvestment):
@@ -57,5 +60,5 @@ def computeAssetDecision(asset, users, totalInvestment):
 
     return totalVote
 
-def computePortfolioValue(portfolio):
+def computePortfolioValue(portfolio, assets):
     #multiply asset values by asset amounts
