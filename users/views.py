@@ -18,6 +18,7 @@ def user_create(request, format=None):
     """
     List all snippets, or create a new snippet.
     """
+    print(request.META)
 
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
