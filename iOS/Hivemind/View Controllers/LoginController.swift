@@ -132,8 +132,8 @@ class LoginController : UIViewController {
             return
         }
         
-        if username.length <= 4 {
-            Alert.general(status: .bademail)
+        if username.length < 5 {
+            Alert.general(status: .shortusername)
             return
         }
         

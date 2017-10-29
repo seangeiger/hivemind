@@ -43,6 +43,11 @@ class HomeController: UIViewController {
         preference_bar.outer_circle_bear.addTarget(self, action: #selector(HomeController.goBear), for: .touchUpInside)
         preference_bar.outer_circle_bull.addTarget(self, action: #selector(HomeController.goBull), for: .touchUpInside)
         preference_bar.outer_circle_neutral.addTarget(self, action: #selector(HomeController.goNeutral), for: .touchUpInside)
+        
+        // Chart
+        let chart = Charter(frame: CGRect(x: 0, y: Utils.top_height, width: view.height, height: view.height - ticker_bar_height - preference_bar_height - Utils.top_height))
+        view.addSubview(chart)
+        
     }
     
     

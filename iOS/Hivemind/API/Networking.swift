@@ -24,6 +24,7 @@ class Networking {
     // Properties //
     
     private static let base_url = "https://hivemind-api-dev.herokuapp.com/"
+    internal static let base_kraken = "https://api.kraken.com/0/public/OHLC"
         
     private static var tasks: [String : URLSessionDataTask] = [:]
     
@@ -116,6 +117,24 @@ class Networking {
     
     internal static func post(key: String, url: String, body: JSON = nil, auth: Bool, callback: @escaping JsonBlock) {
         update(key: key, method: .post, url: url, body: body, auth: auth, callback: callback)
+    }
+    
+    internal static func post(key: String, absoluteURL: String, body: JSON = nil, auth: Bool, callback: @escaping JsonBlock) {
+        guard let url = URL(string: absoluteURL), var request = bootstrap(request: URLRequest(url: url), method: .post, auth: auth) else {
+            callback(.badauth, nil)
+            return
+        }
+
+        if let body = body {
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            } catch {
+                callback(.jsonreqerror, nil)
+                return
+            }
+        }
+        
+        createTask(key: key, request: request, callback: callback)
     }
     
     
@@ -225,19 +244,9 @@ class Networking {
             }
             
             switch element.key {
-            case "email":
-                if compare(message, to: "Enter a valid email address.") {
-                    return .bademail
-                } else if compare(message, to: "A user is already registered with this e-mail address.") {
-                    return .emailinuse
-                } else if compare(message, to: "Email has invalid format.") {
-                    return .unsupportedemail
-                }
             case "non_field_errors":
                 if compare(message, to: "Unable to log in with provided credentials.") {
                     return .badcredentials
-                } else if compare(message, to: "E-mail is not verified.") {
-                    return .checkemail
                 }
             case "detail":
                 if compare(message, to: "Invalid token.") {
