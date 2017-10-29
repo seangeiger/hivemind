@@ -18,11 +18,15 @@ def user_create(request):
     List all snippets, or create a new snippet.
     """
 
-    def post(self, request):
+    if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.data, status=400)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(request.user)
         return JsonResponse(serializer.data, status=400)
 
 
