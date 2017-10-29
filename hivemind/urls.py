@@ -19,6 +19,7 @@ from rest_framework.authtoken import views
 from users import views as user_views
 from assets import views as asset_views
 from portfolio import views as portfolio_views
+from hivemind.tasks import schedule
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,3 +29,5 @@ urlpatterns = [
     url(r'^position/', portfolio_views.position_list),
     url(r'^user/', user_views.user_create),
 ]
+
+schedule()
