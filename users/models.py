@@ -18,6 +18,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile = Profile.objects.create(user=instance)
         profile.save()
+        profile.refresh_from_db()
         Token.objects.create(user=instance)
         try:
             portfolio = Portfolio.objects.get()
