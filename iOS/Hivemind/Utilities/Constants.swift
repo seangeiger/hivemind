@@ -46,6 +46,7 @@ public enum ActionStatus {
     case badtoken
     case badauth
     case badpassword
+    case badinitial
     case nouser
     case unauthorized
     
@@ -54,11 +55,6 @@ public enum ActionStatus {
     case shortusername
     case unsupportedemail
     
-    case profileincomplete
-    case resetpassword
-    
-    case unsupportedupload
-    case unsupportedreview
 }
 
 
@@ -85,6 +81,7 @@ public let ActionDescription: [ActionStatus : (String, String)] = [
     .badtoken:        ("Session Expired", "Your session has expired. Press OK to log in again."),
     .badauth:         ("Login Failed", "Your credentials could not be verified. Please try again later."),
     .badpassword:     ("Incorrect Password", "Your current password could not be recognized. Please correct it and try again."),
+    .badinitial:        ("Initial Amount Error", "Please enter a non-negative amount to start off with"),
     .nouser:          ("User Not Loaded", "Some data has not yet loaded. Please try again."),
     .unauthorized:    ("Unauthorized", "Your request could not be authorized. Please try again."),
     
@@ -92,10 +89,6 @@ public let ActionDescription: [ActionStatus : (String, String)] = [
     .shortusername:    ("Username Too Short", "Usernames must be at least 4 characters in length. Please enter a longer username and try again."),
     .shortpassword:    ("Password Too Short", "Passwords must be at least 8 characters in length. Please enter a longer password and try again."),
     
-    .profileincomplete: ("Profile Incomplete", "Please complete all fields in your profile before navigating around Condecca."),
-    .resetpassword:     ("Password Reset", "Check your inbox at %s to reset your password."),
-    .unsupportedupload: ("Upload Online", "To upload an attachment, please visit Condecca's web app at www.condecca.com."),
-    .unsupportedreview: ("Send Review", "To send this review to a prospective employer, please visit Condecca's web app at www.condecca.com.")
 ]
 
 

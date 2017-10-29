@@ -138,9 +138,17 @@ class LoginController : UIViewController {
         }
         
         self.form.setUI(enabled: false)
-        
-        async(after: 1) {
-            Utils.app_delegate.proceed(to: .home, animated: true)
+
+        API.login(username: username, password: password) { status in
+            DispatchQueue.main.async { [weak self] in
+                switch status {
+                case .success:
+                    Utils.app_delegate.proceed(to: .home, animated: true)
+                default:
+                    Alert.general(status: status)
+                    self?.form.setUI(enabled: true)
+                }
+            }
         }
     }
     
@@ -152,6 +160,10 @@ class LoginController : UIViewController {
         let initial = form.textFrom(tag: Element.initial.rawValue)
         if username.isEmpty || password.isEmpty || confirm.isEmpty || initial.isEmpty {
             Alert.general(status: .missingfields)
+            return
+        }
+        guard let double_initial = Double(initial) else {
+            Alert.general(status: .badinitial)
             return
         }
         if username.length < 5 {
@@ -169,8 +181,22 @@ class LoginController : UIViewController {
         
         self.form.setUI(enabled: false)
 
-        async(after: 1) {
-            self.form.setUI(enabled: true)
+        API.register(username: username, password: password, originalInvestment: double_initial) { status in
+            DispatchQueue.main.async { [weak self] in
+                switch status {
+                case .success:
+                    Utils.app_delegate.proceed(to: .home, animated: true)
+                    
+                    API.login(username: username, password: password) { status in
+                        if status != .success {
+                            debugPrint("Unexpected error with \(status)")
+                        }
+                    }
+                default:
+                    Alert.general(status: status)
+                    self?.form.setUI(enabled: true)
+                }
+            }
         }
     }
 

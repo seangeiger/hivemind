@@ -10,33 +10,23 @@ import Foundation
 
 class Portfolio {
     
-	private(set) var total_investment: Double
-	private(set) var uninvested: Double
-	private(set) var positions: [Position]
-	
-	init(total_investment: Double, uninvested: Double, positions: [Position]) {
-		self.total_investment = total_investment
+	private(set) var total_investment: CGFloat
+	private(set) var uninvested: CGFloat
+    
+	init(totalInvestment: CGFloat, uninvested: CGFloat) {
+		self.total_investment = totalInvestment
 		self.uninvested = uninvested
-		self.positions = positions
 	}
 	
 	static func parse(json: ObjJSON) -> Portfolio? {
         guard
-			let total_investment	= json["total_investment"] as? Double, 
-			let uninvested			= json["uninvested"] as? Double,
-			let position_raw 		= json["positions"] as? [ObjJSON]
+			let total_investment_raw = json["totalInvestment"] as? String, let total_investment = Double(total_investment_raw),
+			let uninvested_raw		  = json["uninvested"] as? String, let uninvested = Double(uninvested_raw)
         else {
             debugPrint("Could not load Portfolio serializer")
             return nil
         }
-		
-		var position: [Position] = []
-		for element in position_raw {
-			if let position = Position.parse(json: element) {
-				positions.append(position)
-            }
-		}
-		
-		return Portfolio(total_investment: total_investment, uninvested: uninvested, positions)
+				
+        return Portfolio(totalInvestment: CGFloat(total_investment), uninvested: CGFloat(uninvested))
 	}
 }

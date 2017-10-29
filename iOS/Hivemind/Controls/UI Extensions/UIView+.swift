@@ -40,7 +40,6 @@ extension UIView {
         bubble(duration: nil, x: nil, y: nil, damping: nil, velocity: nil, options: nil)
     }
     
-    
     func bubble(duration: TimeInterval? = nil, x: CGFloat? = nil, y: CGFloat? = nil, damping: CGFloat? = nil, velocity: CGFloat? = nil,
                 options: UIViewAnimationOptions? = nil) {
         

@@ -10,12 +10,6 @@ import UIKit
 
 class PreferenceBar: UIView {
     
-    enum Preference {
-        case bull
-        case bear
-        case neutral
-    }
-    
     /////////////////////////////////////////////////////////////////////////////////
     
     let icon_bull = UIImageView(image: UIImage(named: "icon_bull")?.withRenderingMode(.alwaysTemplate))
@@ -49,7 +43,7 @@ class PreferenceBar: UIView {
         preference_line.backgroundColor = Color.grey
         self.addSubviewInCenter(preference_line)
         
-        let center_line = UIView(frame: CGRect(x: 0, y: 0, width: 0.005 * self.width, height: 0.33 * self.height))
+        let center_line = UIView(frame: CGRect(x: 0, y: 0, width: 0.005 * self.width, height: 0.4 * self.height))
         center_line.backgroundColor = Color.gray
         self.addSubviewInCenter(center_line)
         
@@ -100,77 +94,60 @@ class PreferenceBar: UIView {
         outer_circle_bear.isUserInteractionEnabled = true
         
         // State
-        changePreference(to: .neutral, animated: false)
+        changePreference(to: .neutral, duration: 0)
         placeNeutralCircle(at: 0.3)
     }
     
     func placeNeutralCircle(at position: CGFloat) {
-        outer_circle_neutral.center.x = preference_line.frame.minX + position * preference_line.width
+        outer_circle_neutral.center.x = preference_line.center.x + (position / 280) * preference_line.width
     }
     
     
-    func changePreference(to preference: Preference, animated: Bool) {
-        let duration = 0.4
-        
-        UIView.animate(withDuration: animated ? duration : 0, delay: 0, options: UIViewAnimationOptions.allowUserInteraction, animations: { [weak self] in
-            switch preference {
-            case .bull:
-                if animated {
-                    self?.outer_circle_bull.bubble(duration: duration, options: .allowUserInteraction)
-                }
-                self?.outer_circle_bull.backgroundColor = Color.green_mid
-                self?.outer_circle_bear.backgroundColor = Color.gray
-                self?.inner_circle_bull.backgroundColor = Color.green_light
-                self?.inner_circle_bear.backgroundColor = Color.white
-                self?.icon_bull.tintColor = Color.white
-                self?.icon_bear.tintColor = Color.red_dark
-                
-                self?.outer_circle_neutral.backgroundColor = Color.gray
-                self?.inner_circle_neutral.backgroundColor = Color.white
+    func changePreference(to preference: Preference.PreferenceType, duration: TimeInterval) {
+        switch preference {
+        case .bull:
+            if duration > 0 {
+                outer_circle_bull.bubble(duration: duration, x: nil, y: nil, damping: nil, velocity: nil, options: .allowUserInteraction)
+            }
+            outer_circle_bull.backgroundColor = Color.green_mid
+            outer_circle_bear.backgroundColor = Color.gray
+            inner_circle_bull.backgroundColor = Color.green_light
+            inner_circle_bear.backgroundColor = Color.white
+            icon_bull.tintColor = Color.white
+            icon_bear.tintColor = Color.red_dark
             
-            case .bear:
-                if animated {
-                    self?.outer_circle_bear.bubble(duration: duration,  options: .allowUserInteraction)
-                }
-                self?.outer_circle_bull.backgroundColor = Color.gray
-                self?.outer_circle_bear.backgroundColor = Color.red_dark
-                self?.inner_circle_bull.backgroundColor = Color.white
-                self?.inner_circle_bear.backgroundColor = Color.red_light
-                self?.icon_bull.tintColor = Color.green_dark
-                self?.icon_bear.tintColor = Color.white
-                
-                self?.outer_circle_neutral.backgroundColor = Color.gray
-                self?.inner_circle_neutral.backgroundColor = Color.white
-                
-            case .neutral:
-                if animated {
-                    self?.outer_circle_neutral.bubble(duration: duration, options: .allowUserInteraction)
-                }
-                
-                self?.outer_circle_bull.backgroundColor = Color.gray
-                self?.outer_circle_bear.backgroundColor = Color.gray
-                self?.inner_circle_bull.backgroundColor = Color.white
-                self?.inner_circle_bear.backgroundColor = Color.white
-                self?.icon_bull.tintColor = Color.green_dark
-                self?.icon_bear.tintColor = Color.red_dark
-                
-                self?.outer_circle_neutral.backgroundColor = Color.purple_4
-                self?.inner_circle_neutral.backgroundColor = Color.purple_1
+            outer_circle_neutral.backgroundColor = Color.gray
+            inner_circle_neutral.backgroundColor = Color.white
+            
+        case .bear:
+            if duration > 0 {
+                outer_circle_bear.bubble(duration: duration, x: nil, y: nil, damping: nil, velocity: nil, options: .allowUserInteraction)
             }
-        }, completion: nil)
-    }
-        
-        
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        for subview in subviews {
-            if subview.frame.contains(point) {
-                return true
+            outer_circle_bull.backgroundColor = Color.gray
+            outer_circle_bear.backgroundColor = Color.red_dark
+            inner_circle_bull.backgroundColor = Color.white
+            inner_circle_bear.backgroundColor = Color.red_light
+            icon_bull.tintColor = Color.green_dark
+            icon_bear.tintColor = Color.white
+            
+            outer_circle_neutral.backgroundColor = Color.gray
+            inner_circle_neutral.backgroundColor = Color.white
+            
+        case .neutral:
+            if duration > 0 {
+                outer_circle_neutral.bubble(duration: duration, x: nil, y: nil, damping: nil, velocity: nil, options: .allowUserInteraction)
             }
+            outer_circle_bull.backgroundColor = Color.gray
+            outer_circle_bear.backgroundColor = Color.gray
+            inner_circle_bull.backgroundColor = Color.white
+            inner_circle_bear.backgroundColor = Color.white
+            icon_bull.tintColor = Color.green_dark
+            icon_bear.tintColor = Color.red_dark
+            
+            outer_circle_neutral.backgroundColor = Color.purple_4
+            inner_circle_neutral.backgroundColor = Color.purple_1
         }
-        return false
     }
-        
-        
         
 }
 

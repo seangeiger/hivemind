@@ -15,9 +15,11 @@ let DEBUG_ON      = true
 
 let SAVE_TOKEN    = true
 let SAVE_KEYBOARD = true
+let SAVE_CURRENT_ASSET = true
 
 let CACHE_IMAGES  = false
 let IGNORE_LOGIN = false
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
