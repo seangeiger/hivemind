@@ -8,7 +8,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
 
-        fields = ('total_investment', 'original_investment', 'transfer_request','user',)
+        fields = ('total_investment', 'original_investment', 'transfer_request',)
+        read_only_fields = ('total_investment',)
 
 
 class PreferenceSerializer(serializers.ModelSerializer):
@@ -18,20 +19,18 @@ class PreferenceSerializer(serializers.ModelSerializer):
         model = Preference
         fields = ('preference', 'asset', )
 
-    def create(self, validated_data):
-        return Preference.objects.create(**validated_data)
-
     def update(self, instance, validated_data):
         instance.preference = validated_data.get('preference', instance.preference)
         instance.save()
         return instance
 
+
 class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer(required=True)
+    profile = ProfileSerializer()
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'initial',)
+        fields = ('username', 'password', 'profile', )
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -40,6 +39,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         user.refresh_from_db()
-        user.profile.original_investment = validated_data['initial']
+        user.profile.original_investment = validated_data['profile']['original_investment']
 
         return user

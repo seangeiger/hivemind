@@ -1,1 +1,1 @@
-web: gunicorn hivemind.wsgi -D
+web: gunicorn hivemind.wsgi
