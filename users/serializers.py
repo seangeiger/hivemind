@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
+
         fields = ('total_investment', 'original_investment', 'transfer_request','user',)
 
 class PreferenceSerializer(serializers.ModelSerializer):
