@@ -9,4 +9,4 @@ class PortfolioSerializer(serializers.ModelSerializer):
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
-        fields = ('assetAmount', 'asset', 'portfolio',)
+        fields = ('assetAmount', 'asset', 'portfolioPercentage', 'portfolio',)
