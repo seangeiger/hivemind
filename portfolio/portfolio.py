@@ -63,7 +63,7 @@ def computeAssetDecision(asset, users, totalInvestment):
 def computePortfolioInvestedValue(portfolio, positions):
     totalInvestment = 0
     for p in positions:
-        totalInvestment += p.assetAmount + p.asset.price
+        totalInvestment += p.assetAmount * p.asset.price
     return totalInvestment
 
 
@@ -80,7 +80,8 @@ def updatePortfolioTotalInvestment(portfolio, desiredInvestments, newTotalValue)
 
 
 def updateProfileInvestmentValues(portfolio, users, newInvested, newTotal):
-    previosInvestment = portfolio.totalInvestment
+    previousInvestment = portfolio.totalInvestment
+    totalNetTransfers = 0
     if(previousInvestment == 0):
         for u in users:
             if u.profile.total_investment == 0:
@@ -89,7 +90,7 @@ def updateProfileInvestmentValues(portfolio, users, newInvested, newTotal):
                 u.profile.total_investment = u.profile.original_investment
                 totalNetTransfers += u.profile.transfer_request
                 u.save()
-        return
+        return totalNetTransfers
     for u in users:
         investmentPercentage = u.profile.total_investment / previousInvestment
         u.profile.total_investment = investmentPercentage*newTotal
