@@ -119,7 +119,7 @@ def updateProfileInvestmentValues(portfolio, users, newInvested, newTotal):
     return totalNetTransfers
 
 def updatePositions(positions, desiredInvestments):
-    totalInvestment = Portfolio.objects.get().uninvested
+    totalInvestment = 0
     for a in desiredInvestments:
         totalInvestment += desiredInvestments[a]
 
@@ -128,5 +128,5 @@ def updatePositions(positions, desiredInvestments):
         desiredAmount = desiredValue / p.asset.price
         p.assetAmount = desiredAmount
 
-        p.portfolioPercentage = desiredValue/totalInvestment
+        p.portfolioPercentage = desiredValue/totalInvestment if totalInvestment>0 else 0
         p.save()
