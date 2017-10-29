@@ -16,13 +16,16 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        # profile = Profile.objects.create(user=instance)
-        # profile.total_investment = profile.original_investment
-        # profile.save()
+        profile = Profile.objects.create(user=instance)
+        #profile.total_investment = profile.original_investment
+        profile.save()
         Token.objects.create(user=instance)
-        portfolio = Portfolio.objects.get()
-        portfolio.uninvested += profile.original_investment
-        portfolio.save()
+        try:
+            portfolio = Portfolio.objects.get()
+            portfolio.uninvested += profile.original_investment
+            portfolio.save()
+        except Portfolio.DoesNotExist:
+            pass
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
