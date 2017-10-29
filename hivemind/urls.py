@@ -18,10 +18,12 @@ from django.contrib import admin
 from rest_framework.authtoken import views
 from users import views as user_views
 from assets import views as asset_views
+from portfolio import views as portfolio_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^preferences/', user_views.preference_list),
     url(r'^assets/', asset_views.asset_list),
+    url(r'^position/', portfolio_views.position_list),
 ]
