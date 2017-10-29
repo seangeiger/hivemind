@@ -27,7 +27,7 @@ def create_user_profile(sender, instance, created, **kwargs):
             pref.save()
         if instance.profile.not_invested and instance.profile.original_investment > 0:
             portfolio = Portfolio.objects.get()
-            portfolio.uninvested += instance.original_investment
+            portfolio.uninvested += instance.profile.original_investment
             portfolio.save()
             instance.profile.not_invested = False
             instance.profile.save()
