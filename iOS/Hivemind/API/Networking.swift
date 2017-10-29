@@ -50,7 +50,7 @@ class Networking {
             if let absolute_url = request.url?.absoluteString {
                 result["absolute_url"] = absolute_url
             }
-            
+                        
             if let http_status = response as? HTTPURLResponse, http_status.statusCode != 200 {
                 // All successful requests are assumed to return 200 -> Make sure the server fam knows this
                 callback(self.check(response: http_status, json: result), result)
@@ -96,6 +96,9 @@ class Networking {
                 return
             }
         }
+        
+        
+        print(request)
         
         createTask(key: key, request: request, callback: callback)
     }
