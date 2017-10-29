@@ -1,1 +1,1 @@
-web: web: bin/start-pgbouncer-stunnel gunicorn hivemind.wsgi
+web: bin/start-pgbouncer-stunnel gunicorn hivemind.wsgi
