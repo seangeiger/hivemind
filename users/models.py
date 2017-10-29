@@ -10,8 +10,8 @@ from portfolio.models import Portfolio
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     total_investment = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    original_investment = models.DecimalField(max_digits=15, decimal_places=2,default = 0)
-
+    original_investment = models.DecimalField(max_digits=15, decimal_places=2, default = 0)
+    transfer_request = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -30,7 +30,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
-
 
 class Preference(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
