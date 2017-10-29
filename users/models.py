@@ -17,7 +17,6 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile = Profile.objects.create(user=instance)
-        #profile.total_investment = profile.original_investment
         profile.save()
         Token.objects.create(user=instance)
         try:
@@ -26,6 +25,9 @@ def create_user_profile(sender, instance, created, **kwargs):
             portfolio.save()
         except Portfolio.DoesNotExist:
             pass
+        # Create all preferences
+        for asset in Asset.objects.all():
+            pref = Preference(asset=asset, user=instance, preference=Preference.BEE)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):

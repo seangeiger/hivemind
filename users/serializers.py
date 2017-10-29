@@ -1,6 +1,8 @@
 from users.models import Profile, Preference
 from rest_framework import serializers
+from assets.serializers import AssetSerializer
 from django.contrib.auth.models import User
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,10 +10,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         fields = ('total_investment', 'original_investment', 'transfer_request','user',)
 
+
 class PreferenceSerializer(serializers.ModelSerializer):
+    asset = AssetSerializer(read_only=True)
+
     class Meta:
         model = Preference
-        fields = ('preference', 'asset', 'user',)
+        fields = ('preference', 'asset', )
 
     def create(self, validated_data):
         return Preference.objects.create(**validated_data)
