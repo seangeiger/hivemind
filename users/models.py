@@ -29,7 +29,8 @@ def create_user_profile(sender, instance, created, **kwargs):
             portfolio = Portfolio.objects.get()
             portfolio.uninvested += instance.original_investment
             portfolio.save()
-            instance.not_invested = False
+            instance.profile.not_invested = False
+            instance.profile.save()
             instance.save()
 
 @receiver(post_save, sender=User)
