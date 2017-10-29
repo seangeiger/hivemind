@@ -20,7 +20,7 @@ class Asset {
 		self.price = price
 	}
 	
-	static func parse(json: [String: AnyObject]) -> Asset? {
+	static func parse(json: ObjJSON) -> Asset? {
 		guard
 			let id		 = json["name"] as? String,
 			let api_name = json["api_name"] as? String,
