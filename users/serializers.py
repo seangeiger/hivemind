@@ -18,9 +18,6 @@ class PreferenceSerializer(serializers.ModelSerializer):
         model = Preference
         fields = ('preference', 'asset', )
 
-    def create(self, validated_data):
-        return Preference.objects.create(**validated_data)
-
     def update(self, instance, validated_data):
         instance.preference = validated_data.get('preference', instance.preference)
         instance.save()

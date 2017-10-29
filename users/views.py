@@ -5,6 +5,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from users.models import Preference, User, Profile
 from users.serializers import UserSerializer, ProfileSerializer, PreferenceSerializer
+from assets.models import Asset
 from rest_framework.decorators import api_view
 # Create your views here.
 
@@ -12,7 +13,6 @@ from rest_framework.decorators import api_view
 @csrf_exempt
 @api_view(['GET','PUT'])
 def preference_list(request):
-    print(request.user)
 
     if request.method == 'GET':
         prefs = Preference.objects.filter(user=request.user)
@@ -21,7 +21,12 @@ def preference_list(request):
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        serializer = PreferenceSerializer(data=data)
+        try:
+            asset = Asset.objects.get(api_name=data['asset']['api_name'])
+            pref = Preference.objects.get(user=request.user, asset=asset)
+        except Preference.DoesNotExist:
+            return JsonResponse("", status=400)
+        serializer = PreferenceSerializer(pref, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=200)
