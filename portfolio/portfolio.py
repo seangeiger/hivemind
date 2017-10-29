@@ -6,7 +6,7 @@ from portfolio.models import Position
 from django.contrib.auth.models import User
 
 def computePortfolioUpdate():
-    print("Updating portfolio")
+    print("Updating portfolio...\n")
     users = User.objects.all()
     assets = Asset.objects.all()
     portfolio = Portfolio.objects.get()
