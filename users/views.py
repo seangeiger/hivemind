@@ -9,9 +9,10 @@ from assets.models import Asset
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 # Create your views here.
-
+from rest_framework.authentication import TokenAuthentication
 
 @csrf_exempt
+@authentication_classes((TokenAuthentication,))
 @api_view(['GET', 'POST'])
 def user_create(request):
     """
