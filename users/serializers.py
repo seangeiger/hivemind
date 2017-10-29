@@ -37,7 +37,9 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             password=validated_data['password'],
         )
-
+        user.save()
+        user.set_password(validated_data['password'])
+        user.save()
         user.refresh_from_db()
         user.profile.original_investment = validated_data['profile']['original_investment']
 

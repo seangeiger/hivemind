@@ -6,6 +6,7 @@ from portfolio.models import Position
 from django.contrib.auth.models import User
 
 def computePortfolioUpdate():
+    print("Updating portfolio...\n")
     users = User.objects.all()
     assets = Asset.objects.all()
     portfolio = Portfolio.objects.get()
@@ -17,7 +18,7 @@ def computePortfolioUpdate():
     portfolioValueTotal = portfolioValueInvested + portfolio.uninvested
 
     totalNetTransfers = updateProfileInvestmentValues(portfolio, users, portfolioValueInvested, portfolioValueTotal)
-    # handle net transfers
+    portfolioValueTotal+=totalNetTransfers
     for u in users:
         u.refresh_from_db()
 
@@ -46,6 +47,9 @@ def computePortfolioUpdate():
 def computeAssetDecision(asset, users, totalInvestment):
     totalVote = 0
     for u in users:
+        if(totalInvestment == 0):
+            for u in users:
+                totalInvestment += u.profile.total_investment
         weight = u.profile.total_investment / totalInvestment
         vote = "BEE"
         preferences = Preference.objects.filter(user=u)
@@ -124,5 +128,5 @@ def updatePositions(positions, desiredInvestments):
         desiredAmount = desiredValue / p.asset.price
         p.assetAmount = desiredAmount
 
-        p.portfolioPercentage = desiredValue/totalInvestment
+        p.portfolioPercentage = desiredValue/totalInvestment if totalInvestment>0 else 0
         p.save()

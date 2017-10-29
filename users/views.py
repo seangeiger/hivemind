@@ -6,14 +6,15 @@ from rest_framework.parsers import JSONParser
 from users.models import Preference, User, Profile
 from users.serializers import UserSerializer, ProfileSerializer, PreferenceSerializer
 from assets.models import Asset
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.views import APIView
 # Create your views here.
-
+from rest_framework.authentication import TokenAuthentication
 
 @csrf_exempt
+@authentication_classes((TokenAuthentication,))
 @api_view(['GET', 'POST'])
-def user_create(request):
+def user_create(request, format=None):
     """
     List all snippets, or create a new snippet.
     """
@@ -27,7 +28,7 @@ def user_create(request):
 
     if request.method == 'GET':
         serializer = UserSerializer(request.user)
-        return JsonResponse(serializer.data, status=400)
+        return JsonResponse(serializer.data, status=200)
 
 
 @csrf_exempt
@@ -37,7 +38,7 @@ def preference_list(request):
     if request.method == 'GET':
         prefs = Preference.objects.filter(user=request.user)
         serializer = PreferenceSerializer(prefs, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(serializer.data, status=200, safe=False)
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
@@ -51,3 +52,8 @@ def preference_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=200)
         return JsonResponse(serializer.errors, status=400)
+
+
+def status(request):
+    if request.method == 'GET':
+        return HttpResponse(status=200)

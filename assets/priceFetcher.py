@@ -13,10 +13,10 @@ def updatePrices():
     assets = Asset.objects.all()
 
     k = krakenex.API()
-
+    print("Updating Prices...\n")
     for a in assets:
-        print("Sleeping...")
-        time.sleep(5)
+        time.sleep(3)
         a.price = getPrice(k,a.api_name)
-        print(a.api_name,a.price)
+        print("Name: {}     Price: {}".format(a.name,a.price))
         a.save()
+    print("\n")
