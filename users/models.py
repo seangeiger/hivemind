@@ -25,7 +25,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         for asset in Asset.objects.all():
             pref = Preference(asset=asset, user=instance, preference=Preference.BEE)
             pref.save()
-        if instance.not_invested and instance.original_investment > 0:
+        if instance.profile.not_invested and instance.profile.original_investment > 0:
             portfolio = Portfolio.objects.get()
             portfolio.uninvested += instance.original_investment
             portfolio.save()
