@@ -19,7 +19,7 @@ class AssetSerializer(serializers.ModelSerializer):
                 value -= amount
         if total != 0:
             value /= total * 100
-        return value
+        return float(value)
 
     class Meta:
         model = Asset
