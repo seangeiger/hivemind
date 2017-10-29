@@ -40,6 +40,24 @@ class Color {
     static let blueln = UIColor(red:  16.0/255.0, green: 102.0/255.0, blue: 153.0/255.0, alpha: 1)
     static let bluegg = UIColor(red:  66.0/255.0, green: 134.0/255.0, blue: 245.0/255.0, alpha: 1)
     
+    // Hivemind Aesthetic
+    
+    static let green_light  = UIColor(red: 96.0/255.0,  green: 173.0/255.0, blue: 94.0/255.0,  alpha: 1)
+    static let green_mid    = UIColor(red: 46.0/255.0,  green: 125.0/255.0, blue: 50.0/255.0,   alpha: 1)
+    static let green_dark   = UIColor(red: 0.0/255.0,   green: 80.0/255.0,  blue: 5.0/255.0,    alpha: 1)
+    static let red_light    = UIColor(red: 154.0/255.0, green: 59.0/255.0, blue: 56.0/255.0, alpha: 1)
+    static let red_mid      = UIColor(red: 103.0/255.0, green: 8.0/255.0,   blue: 18.0/255.0,   alpha: 1)
+    static let red_dark     = UIColor(red: 59.0/255.0,  green: 0.0/255.0,   blue: 0.0/255.0,    alpha: 1)
+    
+    static let purple_1 = UIColor(red: 148.0/255.0, green: 111.0/255.0, blue: 206.0/255.0, alpha: 1)
+    static let purple_2 = UIColor(red: 101.0/255.0, green: 68.0/255.0,  blue: 150.0/255.0, alpha: 1)
+    static let purple_3 = UIColor(red: 72.0/255.0,  green: 26.0/255.0,  blue: 109.0/255.0, alpha: 1)
+    static let purple_4 = UIColor(red: 53.0/255.0,  green: 26.0/255.0,  blue: 109.0/255.0, alpha: 1)
+    static let purple_5 = UIColor(red: 10.0/255.0,  green: 0.0/255.0,   blue: 65.0/255.0,   alpha: 1)
+    
+    static let charcoal = UIColor(red: 26.0/255.0, green: 26.0/255.0, blue: 26.0/255.0, alpha: 1)
+    
+    
     
     ////////////////////////////////////////////////////////////////////////////////////////
     

@@ -16,12 +16,9 @@ typealias VoidBlock    = () -> ()
 typealias StatusBlock  = (ActionStatus) -> ()
 typealias StringsBlock = (ActionStatus, [String]?) -> ()
 typealias JsonBlock    = (ActionStatus, JSON) -> ()
+typealias ButtonBlock  = (UIButton) -> ()
 
 extension Notification.Name {
-    static let gallerySwipe   = Notification.Name("gallery_swipe")
-    static let backgroundLoad = Notification.Name("background_load")
-    static let applied        = Notification.Name("applied")
-    static let feedLoaded     = Notification.Name("feed_loaded")
     static let geocodeFinish  = Notification.Name("geocode_finish")
 }
 

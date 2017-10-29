@@ -13,9 +13,9 @@ class SplashController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Color.yellow
+        view.backgroundColor =  Color.charcoal
         
-        async(after: 3) {
+        async(after: 1) {
             Utils.app_delegate.proceed(to: .home, animated: true)
         }
     }
