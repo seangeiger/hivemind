@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         port_folio = Portfolio(id = 0)
         port_folio.save()
-        print("Reached")
+
         for a in Asset.objects.all():
             pos = Position(asset = a,portfolio=port_folio, assetAmount=0,portfolioPercentage=0)
             pos.save()
