@@ -20,7 +20,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         profile = Profile.objects.create(user=instance)
         profile.save()
         profile.refresh_from_db()
-        Token.objects.create(user=instance)
+        Token.objects.get_or_create(user=instance)
         # Create all preferences
         for asset in Asset.objects.all():
             pref = Preference(asset=asset, user=instance, preference=Preference.BEE)
