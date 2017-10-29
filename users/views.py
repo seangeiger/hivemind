@@ -17,7 +17,7 @@ def user_create(request):
     """
     List all snippets, or create a new snippet.
     """
-
+    \
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,7 +27,7 @@ def user_create(request):
 
     if request.method == 'GET':
         serializer = UserSerializer(request.user)
-        return JsonResponse(serializer.data, status=400)
+        return JsonResponse(serializer.data, status=200)
 
 
 @csrf_exempt
