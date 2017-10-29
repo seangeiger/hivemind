@@ -18,7 +18,7 @@ def computePortfolioUpdate():
     portfolioValueTotal = portfolioValueInvested + portfolio.uninvested
 
     totalNetTransfers = updateProfileInvestmentValues(portfolio, users, portfolioValueInvested, portfolioValueTotal)
-    # handle net transfers
+    portfolioValueTotal+=totalNetTransfers
     for u in users:
         u.refresh_from_db()
 

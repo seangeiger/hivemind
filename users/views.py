@@ -51,3 +51,8 @@ def preference_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=200)
         return JsonResponse(serializer.errors, status=400)
+
+
+def status(request):
+    if request.method == 'GET':
+        return HttpResponse(status=200)
