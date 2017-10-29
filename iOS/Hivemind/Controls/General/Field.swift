@@ -25,10 +25,14 @@ class Field: UITextField {
     
     //////////////////////////////////////////////////////////////////////////////////
     
-    required init?(coder aDecoder: NSCoder) {fatalError("init(coder:) has not been implemented")}
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        
+    }
     
     init(frame: CGRect, textColor: UIColor) {
         super.init(frame: frame)
+        self.defaultTextAttributes = Font.makeLegacyAttrs(size: ._18, color: textColor)
         self.returnKeyType = .done
         
         let separator = UIView(frame: CGRect(x: 0, y: 0, width: 1.05 * self.width, height: 0.5))

@@ -128,10 +128,10 @@ class Form: UIScrollView {
         if current_max_y > max_y {
             max_y = current_max_y
         }
-        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: duration, delay: 0, options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState], animations: {
             view.center = CGPoint(x: self.bounds.midX, y: y_position)
             view.alpha = is_enabled ? 1 : 0
-            if view is UIButton || view is UITextField || view is UITextView {
+            if view is UITextField || view is UITextView {
                 view.isUserInteractionEnabled = is_enabled
             }
         }, completion: nil)
