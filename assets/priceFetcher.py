@@ -5,6 +5,11 @@ from background_task import background
 from assets.models import Asset
 
 
+def getPrice(k,coin = 'XXBTZUSD'):
+    results = k.query_public("Ticker",{'pair':coin})['result'][coin]
+    return eval(results['a'][0])
+
+
 @background(schedule=0, repeat=60)
 def updatePrices():
     print("Updating prices")
@@ -20,8 +25,3 @@ def updatePrices():
 
 
 updatePrices()
-
-
-def getPrice(k,coin = 'XXBTZUSD'):
-    results = k.query_public("Ticker",{'pair':coin})['result'][coin]
-    return eval(results['a'][0])
