@@ -16,7 +16,8 @@ def computePortfolioUpdate():
     portfolioValueInvested = computePortfolioInvestedValue(portfolio, positions)
     portfolioValueTotal = portfolioValueInvested + portfolio.uninvested
 
-    updateProfileInvestmentValues(portfolio, users, portfolioValueInvested, portfolioValueTotal)
+    totalNetTransfers = updateProfileInvestmentValues(portfolio, users, portfolioValueInvested, portfolioValueTotal)
+    # handle net transfers
     for u in users:
         u.refresh_from_db()
 
@@ -83,15 +84,34 @@ def updateProfileInvestmentValues(portfolio, users, newInvested, newTotal):
     if(previousInvestment == 0):
         for u in users:
             if u.profile.total_investment == 0:
+                if u.profile.transfer_request > 0:
+                    u.profile.original_investment += u.profile.transfer_request
                 u.profile.total_investment = u.profile.original_investment
+                totalNetTransfers += u.profile.transfer_request
                 u.save()
         return
     for u in users:
         investmentPercentage = u.profile.total_investment / previousInvestment
         u.profile.total_investment = investmentPercentage*newTotal
+        if u.profile.transfer_request > 0:
+            totalNetTransfers += u.profile.transfer_request
+            u.profile.total_investment += u.profile.transfer_request
+            u.profile.transfer_request = 0
+        else:
+            if u.profile.transfer_request > (-1 * u.profile.total_investment):
+                totalNetTransfers += u.profile.transfer_request
+                u.profile.total_investment += u.profile.transfer_request
+                u.profile.transfer_request = 0
+            else:
+                transfer_val = -1 * u.profile.total_investment
+                totalNetTransfers += transfer_val
+                u.profile.total_investment += transfer_val
+                u.profile.transfer_request = 0
         if investmentPercentage == 0:
             u.profile.total_investment = u.profile.original_investment
         u.save()
+
+    return totalNetTransfers
 
 def updatePositions(positions, desiredInvestments):
     totalInvestment = 0
