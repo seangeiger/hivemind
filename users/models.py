@@ -12,6 +12,7 @@ class Profile(models.Model):
     total_investment = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     original_investment = models.DecimalField(max_digits=15, decimal_places=2, default = 0)
     transfer_request = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0)
+    not_invested = models.BooleanField(default=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -20,12 +21,6 @@ def create_user_profile(sender, instance, created, **kwargs):
         profile.save()
         profile.refresh_from_db()
         Token.objects.create(user=instance)
-        try:
-            portfolio = Portfolio.objects.get()
-            portfolio.uninvested += profile.original_investment
-            portfolio.save()
-        except Portfolio.DoesNotExist:
-            pass
         # Create all preferences
         for asset in Asset.objects.all():
             pref = Preference(asset=asset, user=instance, preference=Preference.BEE)
@@ -33,6 +28,15 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+@receiver(post_save, sender=Profile)
+def calculated_uninvested(sender, instance, **kwargs):
+    if instance.not_invested and instance.original_investment > 0:
+        portfolio = Portfolio.objects.get()
+        portfolio.uninvested += instance.original_investment
+        portfolio.save()
+        instance.not_invested = False
+        instance.save()
 
 class Preference(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
