@@ -63,6 +63,18 @@ class Color {
     
     // Color Resolvers //
     
+    static func resolve(_ preference: Preference.PreferenceType) -> UIColor {
+        switch preference {
+        case .bear:
+            return Color.red_light
+        case .bull:
+            return Color.green_light
+        case .neutral:
+            return Color.purple_2
+        }
+    }
+    
+    
     
     
 }

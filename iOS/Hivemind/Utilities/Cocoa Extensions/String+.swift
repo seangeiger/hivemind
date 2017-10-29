@@ -159,5 +159,14 @@ extension String {
         return String(format: "%.2f", value)
     }
     
+    var formatted_currency: String? {
+        let price = NSNumber(value: (self as NSString).doubleValue)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter.string(from: price)
+    }
+    
+    
+    
     
 }

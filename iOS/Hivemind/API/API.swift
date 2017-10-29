@@ -8,27 +8,23 @@
 
 import Foundation
 
-class API : Networking {
+class API: Networking {
     
-    // Model State
-    //internal(set) static var user: User?
-
+    // Model State //
     
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    // Polling //
+    static var profile: Profile?
+    static var preferences: [Preference] = []
+    static var positions: [Position] = []
+    static var assets: [Asset] = []
     
     static func startUpdates() {
         
     }
     
     static func pauseUpdates() {
-
+        
     }
     
-    
-    
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     // Auth //
     
@@ -43,80 +39,135 @@ class API : Networking {
     static func loadToken() -> Bool {
         if SAVE_TOKEN, let token = UserDefaultsManager.readToken() {
             API.token = token
-            // Set model state with other stored data if required
             return true
         }
         return false
     }
     
-    ////////////////////////////////////////////////////////////////////////////////////
     
-    static func login(email: String, password: String, callback: @escaping StatusBlock) {
-        API.post(key: "login", url: "login/", body: ["email" : email, "password": password], auth: false) { status, json in
+    // Meat //
+    
+    static func login(username: String, password: String, callback: @escaping StatusBlock) {
+        let body = ["username": username, "password": password]
+        API.post(key: "login", url: "api-token-auth/", body: body, auth: false) { status, json in
             if status != .success {
                 callback(status)
-                
-            } else if let key = json?["key"] as? String {
+            } else if let key = json?["token"] as? String {
                 set(token: key)
-                
-                // Verify with server (i.e. get profile), nullify with token if fail
-                async(after: 1) {
+                API.getUser { status in
                     callback(.success)
                 }
-                
             } else {
                 callback(.badauth)
             }
         }
     }
     
-    
-    static func register(username: String, password: String, callback: @escaping StatusBlock) {
-        // Turn unputs into hard JSON
-        let body: HardJSON = ["username": username, "password": password] as HardJSON
-        API.post(key: "register", url: "/registration/", body: body, auth: false) { status, json in
-            callback(status)
-        }
-    }
-    
-    
     static func logout() {
-        API.post(key: "logout", url: "logout/", auth: true) { status, json in
-            set(token: nil)
-            
-            // Nullify model state
-            Utils.app_delegate.exit()
+        set(token: nil)
+        API.profile = nil
+        API.preferences = []
+        API.assets = []
+        Utils.app_delegate.exit()
+    }
+    
+    static func register(username: String, password: String, originalInvestment: Double, callback: @escaping StatusBlock) {        
+        let body: HardJSON = ["username": username, "password": password, "profile": ["original_investment": originalInvestment]] as HardJSON
+        
+        API.post(key: "register", url: "user/", body: body, auth: false) { status, json in
+            if status == .success {
+                API.login(username: username, password: password) { status in
+                    callback(status)
+                }
+            } else {
+                callback(status)
+            }
         }
     }
     
+    static func getUser(callback: @escaping StatusBlock) {
+        API.get(key: "user", url: "user/", auth: true) { status, json in
+            if let profile_raw = json?["profile"] as? ObjJSON, let profile = Profile.parse(json: profile_raw) {
+                API.profile = profile
+                callback(.success)
+            } else {
+                callback(status)
+            }
+        }
+    }
     
-    static func resetPassword(email: String, callback: @escaping StatusBlock) {
-        API.post(key: "forgot_password", url: "/password/reset/", body: ["email": email], auth: false) { status, json in
+    static func getPreferences(callback: @escaping StatusBlock) {
+        API.get(key: "getPreferences", url: "preferences/", auth: true) { status, json in
+            if status != .success {
+                callback(status)
+            } else if let preferences_raw = json?["body"] as? [ObjJSON] {
+                
+                var preferences: [Preference] = []
+                for element in preferences_raw {
+                    if let preference = Preference.parse(json: element) {
+                        preferences.append(preference)
+                    }
+                }
+                
+                API.preferences = preferences
+                callback(.success)
+            }
+        }
+    }
+    
+    static func getPositions(callback: @escaping StatusBlock) {
+        API.get(key: "getPositions", url: "position/", auth: true) { status, json in
+            if status != .success {
+                callback(status)
+            } else if let positions_raw = json?["body"] as? [ObjJSON] {
+                
+                var positions: [Position] = []
+                for element in positions_raw {
+                    if let position = Position.parse(json: element) {
+                        positions.append(position)
+                    }
+                }
+                
+                API.positions = positions
+                callback(.success)
+            }
+        }
+    }
+    
+    static func updatePreference(preference: Preference.PreferenceType, asset: Asset, callback: @escaping StatusBlock) {
+        let body = ["preference": preference.rawValue, "asset": asset.toJSON()] as HardJSON
+        API.put(key: "putPreference", url: "preferences/", body: body, auth: true) { status, json in
+            if status == .success {
+                for i in 0..<API.preferences.count {
+                    if let current = API.preferences[safe: i], current.asset.api_name == asset.api_name {
+                        API.preferences[i].set(type: preference)
+                        break
+                    }
+                }
+            }
             callback(status)
         }
     }
     
-    
-    static func changePassword(oldPassword: String, newPassword: String, callback: @escaping StatusBlock) {
-        let body = ["old_password": oldPassword, "new_password1": newPassword, "new_password2": newPassword]
-        API.post(key: "change_password", url: "/password/change", body: body, auth: true) { status, json in
-            callback(status)
+    static func getAssets(callback: @escaping StatusBlock) {
+        API.get(key: "getAssets", url: "assets/", auth: true) { status, json in
+            if status != .success {
+                callback(status)
+            } else if let assets_raw = json?["body"] as? [ObjJSON] {
+                
+                var assets: [Asset] = []
+                for element in assets_raw {
+                    if let asset = Asset.parse(json: element) {
+                        assets.append(asset)
+                    }
+                }
+                
+                API.assets = assets
+                callback(.success)
+            }
         }
     }
-    
-    
-    static func changeEmail(newEmail: String, callback: @escaping StatusBlock) {
-        API.patch(key: "change_email", url: "/user/", body: ["email": newEmail], auth: true) { status, json in
-            callback(status)
-        }
-    }
-    
-    
 }
-
-
-
-
 
 
 

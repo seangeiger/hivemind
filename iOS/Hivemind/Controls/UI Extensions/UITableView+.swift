@@ -28,7 +28,7 @@ extension UITableView {
     }
     
     
-    // Adjust the visibility of GeneralCell's custom cell separators, return if the display is empty
+    // Adjust the visibility of AssetCell's custom cell separators, return if the display is empty
     func adjustSeparators() -> Bool {
         var is_display_empty = true
         
@@ -40,7 +40,7 @@ extension UITableView {
             
             // Check cell separators
             for row in 0..<self.numberOfRows(inSection: section) {
-                if let cell = self.cellForRow(at: IndexPath(row: row, section: section)) as? GeneralCell {
+                if let cell = self.cellForRow(at: IndexPath(row: row, section: section)) as? AssetCell {
                     if row == self.numberOfRows(inSection: section) - 1 && section != self.numberOfSections - 1 {
                         cell.setSeparator(visible: false)
                     } else {

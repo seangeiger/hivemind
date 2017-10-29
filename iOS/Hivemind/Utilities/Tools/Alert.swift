@@ -12,7 +12,6 @@ class Alert {
         make(title: nil, message: nil, status: status, defaultOK: true, actions: nil, fields: nil, callback: nil)?.show()
     }
     
-    
     static func general(status: ActionStatus, replacements: [String]) {
         let message = getText(status: status).1.successiveReplace(with: replacements)
         make(title: nil, message: message, status: status, defaultOK: true, actions: nil, fields: nil, callback: nil)?.show()
@@ -22,6 +21,9 @@ class Alert {
         make(title: title, message: message, status: nil, defaultOK: false, actions: nil, fields: fields, callback: callback)?.show()
     }
     
+    static func general(title: String, message: String, actions: [UIAlertAction]) {
+        make(title: nil, message: message, status: nil, defaultOK: false, actions: actions, fields: nil, callback: nil)?.show()
+    }
     
     static func general(title: String, message: String?, fields: [String],actions: [UIAlertAction], callback: @escaping ([String]) -> ()) {
         make(title: title, message: message, status: nil, defaultOK: false, actions: actions, fields: fields, callback: callback)?.show()

@@ -13,6 +13,7 @@ class UserDefaultsManager {
     private enum Key: String {
         case token    = "token"
         case keyboard = "keyboard"
+        case current_asset = "asset"
     }
     
     static func write(token: String?) {
@@ -32,7 +33,13 @@ class UserDefaultsManager {
         return CGFloat(UserDefaults.standard.float(forKey: Key.keyboard.rawValue))
     }
     
+    static func write(currentAsset: String?) {
+        UserDefaults.standard.set(currentAsset, forKey: Key.current_asset.rawValue)
+    }
     
-    
+    static func readCurrentAsset() -> String? {
+        return UserDefaults.standard.string(forKey: Key.current_asset.rawValue)
+    }
+
 }
 

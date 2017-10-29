@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             Keyboard.shared.startListening()
         }
-
+ 
         // Go to first screen
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if API.loadToken() || IGNORE_LOGIN {
@@ -91,6 +91,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if !SAVE_TOKEN {
             UserDefaultsManager.write(token: nil)
+        }
+        
+        if !SAVE_CURRENT_ASSET {
+            UserDefaultsManager.write(currentAsset: nil)
         }
         
         if SAVE_KEYBOARD {
