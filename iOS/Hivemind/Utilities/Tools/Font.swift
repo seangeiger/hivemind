@@ -15,6 +15,7 @@ class Font {
     enum Name: String {
         case montserrat     = "Montserrat-Regular"
         case montserratBold = "Montserrat-Bold"
+        case rawengulkSans  = "RawengulkSans"
     }
     
     enum SizeClass: Int {
@@ -73,12 +74,15 @@ class Font {
     
     ////////////////////////////////////////////////////////////////////////////////////////
     
-    static func makeAttrs(size: SizeClass, color: UIColor, bold: Bool = false) -> FontAttributes {
-        if  let size = Font.SizeDict[size]?[safe: device.rawValue],
-            let font = UIFont(name: bold ? Name.montserratBold.rawValue : Name.montserrat.rawValue, size: size) {
-            return [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: color]
+    static func makeAttrs(size: SizeClass, color: UIColor, bold: Bool = false, type: Font.Name = .montserrat) -> FontAttributes {
+        if  let size = Font.SizeDict[size]?[safe: device.rawValue] {
+            if type == .rawengulkSans, let font = UIFont(name: type.rawValue, size: size) {
+                return [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: color]
+            } else if let font = UIFont(name: bold ? Name.montserratBold.rawValue : Name.montserrat.rawValue, size: size) {
+                return [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: color]
+            }
         }
-        debugPrint("Could not create font of size: \(size), color: \(color), bold: \(bold)")
+        debugPrint("Could not create font of size: \(size), color: \(color), bold: \(bold), type: \(type)")
         return [NSAttributedStringKey.foregroundColor: color]
     }
     

@@ -49,6 +49,7 @@ class API : Networking {
         return false
     }
     
+    ////////////////////////////////////////////////////////////////////////////////////
     
     static func login(email: String, password: String, callback: @escaping StatusBlock) {
         API.post(key: "login", url: "login/", body: ["email" : email, "password": password], auth: false) { status, json in
@@ -84,7 +85,6 @@ class API : Networking {
             set(token: nil)
             
             // Nullify model state
-            
             Utils.app_delegate.exit()
         }
     }

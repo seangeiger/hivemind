@@ -44,10 +44,10 @@ extension UIView {
     func bubble(duration: TimeInterval? = nil, x: CGFloat? = nil, y: CGFloat? = nil, damping: CGFloat? = nil, velocity: CGFloat? = nil,
                 options: UIViewAnimationOptions? = nil) {
         
-        self.transform = CGAffineTransform(scaleX: x ?? 0.7, y: y ?? 0.7)
+        self.transform = CGAffineTransform(scaleX: x ?? 0.75, y: y ?? 0.75)
         
-        UIView.animate(withDuration: duration ?? 1.0, delay: 0, usingSpringWithDamping: damping ?? 0.25, initialSpringVelocity: CGFloat(velocity ?? 4.5),
-                       options: options ?? .allowUserInteraction, animations: {self.transform = CGAffineTransform.identity}, completion: nil)
+        UIView.animate(withDuration: duration ?? 1.0, delay: 0, usingSpringWithDamping: damping ?? 0.25, initialSpringVelocity: CGFloat(velocity ?? 3),
+                       options: options ?? [], animations: {self.transform = CGAffineTransform.identity}, completion: nil)
     }
     
     
@@ -97,5 +97,6 @@ extension UIView {
             view.setRecursiveUserInteraction(enabled: enabled)
         }
     }
+    
     
 }

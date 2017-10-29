@@ -17,8 +17,7 @@ let SAVE_TOKEN    = true
 let SAVE_KEYBOARD = true
 
 let CACHE_IMAGES  = false
-
-let IGNORE_LOGIN = true
+let IGNORE_LOGIN = false
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -93,6 +92,15 @@ class Utils {
     
     static var app_delegate: AppDelegate {
         return (UIApplication.shared.delegate as! AppDelegate)
+    }
+    
+    static func printAvailableFonts() {
+        for family: String in UIFont.familyNames {
+            print("\(family)")
+            for names: String in UIFont.fontNames(forFamilyName: family) {
+                print("== \(names)")
+            }
+        }
     }
     
 }
