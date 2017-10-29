@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias FontAttributes = [NSAttributedStringKey: Any]
+typealias FontAttributes = [NSAttributedStringKey : Any]
 
 class Font {
     
@@ -100,6 +100,19 @@ class Font {
     static func parseHTML(text: String) -> NSAttributedString {
         let modified = "<span style=\"font-family: \(Name.montserrat.rawValue);\">\(text)</span>"
         return modified.utf8Data?.attributedString ?? text.utf8Data?.attributedString ?? Font.make(text: text, size: ._15, color: Color.black)
+    }
+    
+    static func makeLegacyAttrs(size: SizeClass, color: UIColor, bold: Bool = false, type: Font.Name = .montserrat) -> [String : Any] {
+        if  let size = Font.SizeDict[size]?[safe: device.rawValue] {
+            if type == .rawengulkSans, let font = UIFont(name: type.rawValue, size: size) {
+                return [NSAttributedStringKey.font.rawValue: font, NSAttributedStringKey.foregroundColor.rawValue: color]
+            } else if let font = UIFont(name: bold ? Name.montserratBold.rawValue : Name.montserrat.rawValue, size: size) {
+                return [NSAttributedStringKey.font.rawValue: font, NSAttributedStringKey.foregroundColor.rawValue: color]
+            }
+        }
+        
+        debugPrint("Could not create font of size: \(size), color: \(color), bold: \(bold)")
+        return [NSAttributedStringKey.foregroundColor.rawValue: color]
     }
     
     

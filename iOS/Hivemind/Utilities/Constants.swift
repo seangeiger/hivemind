@@ -93,6 +93,7 @@ public let ActionDescription: [ActionStatus : (String, String)] = [
     .unauthorized:    ("Unauthorized", "Your request could not be authorized. Please try again."),
     
     .nomatchpassword:  ("Passwords do not Match","The passwords you entered do not match. Make sure they are correct and try again."),
+    .shortusername:    ("Username Too Short", "Usernames must be at least 4 characters in length. Please enter a longer username and try again."),
     .shortpassword:    ("Password Too Short", "Passwords must be at least 8 characters in length. Please enter a longer password and try again."),
     .emailinuse:       ("Email Address in Use", "This email address is already associated with an existing account."),
     .unsupportedemail: ("Required .Edu Address", "You must use a .edu email with a Condecca student account."),

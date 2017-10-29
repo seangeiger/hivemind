@@ -57,34 +57,34 @@ class LoginController : UIViewController {
         form.addGestureRecognizer(tap)
         
         // Add logo title (header) to form
-        let logo = UIImageView(image: UIImage(named: "logo_title"))
-        logo.resize(newWidth: 0.5 * form.bounds.width)
+        let logo = UIImageView(image: UIImage(named: "title_ondark"))
+        logo.resize(newWidth: 0.6 * form.bounds.width)
         logo.isUserInteractionEnabled = false
         form.addView(tag: Element.logo.rawValue, view: logo, positions: [0.18 * view.bounds.height, 0.18 * view.bounds.height], enabled: [true, false])
         
         // Fields //
         
         form.addField(tag: Element.username.rawValue, delegate: self, textColor: Color.white, titles: ["Username", "Username"],
-                      positions: [0.35 * view.bounds.height, 0.36 * view.bounds.height],
+                      positions: [0.36 * view.bounds.height, 0.12 * view.bounds.height],
                       keyboardTypes: [.emailAddress], returnTypes: [.next, .next], autocorrectTypes: [.no, .no],
                       autocapitalizeTypes: [.none, .none], clearTypes: [.never, .never],
                       securityTypes: [false, false], enabled: [true, true], dropdowns: [false, false])
         
         form.addField(tag: Element.password.rawValue, delegate: self, textColor: Color.white, titles: ["Password", "Password"],
-                      positions: [0.47 * view.bounds.height, 0.48 * view.bounds.height],
+                      positions: [0.48 * view.bounds.height, 0.24 * view.bounds.height],
                       keyboardTypes: [.default], returnTypes: [.send, .next], autocorrectTypes: [.no, .no],
                       autocapitalizeTypes: [.none, .none], clearTypes: [.never, .never],
                       securityTypes: [true, true], enabled: [true, true], dropdowns: [false, false])
         
         form.addField(tag: Element.confirm.rawValue, delegate: self, textColor: Color.white, titles: ["XXX", "Confirm Password"],
-                      positions: [0.12 * view.bounds.height, 0.12 * view.bounds.height],
+                      positions: [0.36 * view.bounds.height, 0.36 * view.bounds.height],
                       keyboardTypes: [.default], returnTypes:  [.next, .next], autocorrectTypes: [.default, .default],
                       autocapitalizeTypes: [.words, .words], clearTypes: [.never, .never],
-                      securityTypes: [false, false], enabled: [false, true], dropdowns: [false, false])
+                      securityTypes: [true, true], enabled: [false, true], dropdowns: [false, false])
         
         form.addField(tag: Element.initial.rawValue, delegate: self, textColor: Color.white, titles: ["XXX", "Initial Amount"],
-                      positions: [0.24 * view.bounds.height, 0.24 * view.bounds.height],
-                      keyboardTypes: [.default], returnTypes: [.next, .next], autocorrectTypes: [.default, .default],
+                      positions: [0.48 * view.bounds.height, 0.48 * view.bounds.height],
+                      keyboardTypes: [.numberPad], returnTypes: [.next, .send], autocorrectTypes: [.default, .default],
                       autocapitalizeTypes: [.none, .none], clearTypes: [.never, .never],
                       securityTypes: [false, false], enabled: [false, true], dropdowns: [true, true])
         
@@ -93,25 +93,27 @@ class LoginController : UIViewController {
         
         form.addButton(tag: Element.submit.rawValue, frame: CGRect(x: 0, y: 0, width: 0.85 * view.bounds.width, height: 0.06 * view.bounds.height),
                        titles: ["Log In", "Sign Up"],
-                       positions: [0.57 * view.bounds.height, 0.70 * view.bounds.height],
+                       positions: [0.58 * view.bounds.height, 0.58 * view.bounds.height],
                        enabled: [true, true],
                        action: { [weak self] (button) in self?.pressedSubmit(sender: button) })
         
+        /*
         form.addButton(tag: Element.button1.rawValue, frame: CGRect(x: 0, y: 0, width: 0.8 * view.bounds.width, height: 0.1 * view.bounds.height),
                        titles: ["Forgot Password?", "Forgot Password?"],
                        positions: [0.855 * view.bounds.height, 0.855 * view.bounds.height],
                        enabled: [true, false],
                        action: { [weak self] (button) in self?.pressedButton1(sender: button) })
-        
+         */
+ 
         form.addButton(tag: Element.button2.rawValue, frame: CGRect(x: 0, y: 0, width: 0.8 * view.bounds.width, height: 0.1 * view.bounds.height),
-                       titles: ["Create a student account", "Already a member? Log in"],
+                       titles: ["Create an account", "Already a member? Log in"],
                        positions: [0.93 * view.bounds.height, 0.93 * view.bounds.height],
                        enabled: [true, true],
                        action: { [weak self] (button) in self?.pressedButton2(sender: button) })
         
         let ai = TimeinActivityIndicator(frame:  CGRect(x: 0, y: 0 , width: 0.3 * view.bounds.width, height: 0.3 * view.bounds.width))
         form.addView(tag: Element.ai.rawValue, view: ai,
-                     positions: [0.67 * view.bounds.height, 0.80 * view.bounds.height],
+                     positions: [0.67 * view.bounds.height, 0.68 * view.bounds.height],
                      enabled: [true, true])
         
         // Set state
@@ -152,8 +154,8 @@ class LoginController : UIViewController {
             Alert.general(status: .missingfields)
             return
         }
-        if !(username.length < 4) {
-            Alert.general(status: .bademail)
+        if username.length < 5 {
+            Alert.general(status: .shortusername)
             return
         }
         if password.length < 8 {
