@@ -50,7 +50,9 @@ def computeAssetDecision(asset, users, totalInvestment):
         if(totalInvestment == 0):
             for u in users:
                 totalInvestment += u.profile.total_investment
-        weight = u.profile.total_investment / totalInvestment
+            weight = 0
+        else:
+            weight = u.profile.total_investment / totalInvestment
         vote = "BEE"
         preferences = Preference.objects.filter(user=u)
         for p in preferences:
