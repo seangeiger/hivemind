@@ -1,4 +1,4 @@
-# hivemind [![Heroku](http://heroku-badge.herokuapp.com/?app=hivemind-api-dev&style=flat&svg=1&root=status)]
+# hivemind ![Heroku](http://heroku-badge.herokuapp.com/?app=hivemind-api-dev&style=flat&svg=1&root=status)
 ## A democratic cryptocurrency portfolio.
 
 Created during HackTX 2017 by [benjaminmaccini](https://github.com/benjaminmaccini), [EvanKaminsky](https://github.com/EvanKaminsky), [bkustar](https://github.com/bkustar), [alexdai186](https://github.com/alexdai186), and [seangeiger](https://github.com/seangeiger).
