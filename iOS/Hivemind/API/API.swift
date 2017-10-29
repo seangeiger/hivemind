@@ -137,6 +137,8 @@ class API: Networking {
     static func updatePreference(preference: Preference.PreferenceType, asset: Asset, callback: @escaping StatusBlock) {
         let body = ["preference": preference.rawValue, "asset": asset.toJSON()] as HardJSON
         API.put(key: "putPreference", url: "preferences/", body: body, auth: true) { status, json in
+            print(status)
+            
             if status == .success {
                 for i in 0..<API.preferences.count {
                     if let current = API.preferences[safe: i], current.asset.api_name == asset.api_name {

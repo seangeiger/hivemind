@@ -5,7 +5,10 @@ Created during HackTX 2017 by [benjaminmaccini](https://github.com/benjaminmacci
 
 hivemind is an iOS application powered by a django backend that allows a group of users to vote on cryptocurrency investments and collectively make portfolio decisions.  It is currently in papertrading mode.
 
-[INSERT SCREENSHOT HERE]
+![Alt text](/misc/screenshot_1.png?raw=true)
+![Alt text](/misc/screenshot_1.png?raw=true)
+![Alt text](/misc/screenshot_1.png?raw=true)
+![Alt text](/misc/screenshot_1.png?raw=true)
 
 Each user joins a group with an initial investment.  Every group has a set of cryptocurrency assets that can be traded.  A user sets preferences for each asset:
     

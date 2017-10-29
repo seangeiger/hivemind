@@ -117,7 +117,7 @@ class PortfolioController: UIViewController {
         }
         
         let personal_equity = personalTotal / portfolioTotal
-        let personal_delta = personalTotal / personalOriginal
+        let personal_delta = personalTotal / personalOriginal - 1.0
         
         let portfolio_percentage = String(format:"%.2f", personal_equity) + "%"
         label_personal_total.attributedText = Font.make(text: personal_total, size: ._30, color: Color.white)
