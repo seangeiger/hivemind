@@ -7,11 +7,27 @@ from users.models import Preference, User, Profile
 from users.serializers import UserSerializer, ProfileSerializer, PreferenceSerializer
 from assets.models import Asset
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 # Create your views here.
 
 
 @csrf_exempt
-@api_view(['GET','PUT'])
+@api_view(['GET', 'POST'])
+def user_create(request):
+    """
+    List all snippets, or create a new snippet.
+    """
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.data, status=400)
+
+
+@csrf_exempt
+@api_view(['GET', 'PUT'])
 def preference_list(request):
 
     if request.method == 'GET':

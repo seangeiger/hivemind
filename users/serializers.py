@@ -23,12 +23,13 @@ class PreferenceSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'initial',)
+        fields = ('username', 'password', 'initial', )
 
     def create(self, validated_data):
         user = User.objects.create(
