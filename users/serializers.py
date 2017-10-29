@@ -42,5 +42,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         user.refresh_from_db()
         user.profile.original_investment = validated_data['profile']['original_investment']
+        user.profile.save()
 
         return user
