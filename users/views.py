@@ -37,7 +37,7 @@ def preference_list(request):
     if request.method == 'GET':
         prefs = Preference.objects.filter(user=request.user)
         serializer = PreferenceSerializer(prefs, many=True)
-        return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.data, status=200, safe=False)
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
