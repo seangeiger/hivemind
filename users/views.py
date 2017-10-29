@@ -14,7 +14,7 @@ from rest_framework.authentication import TokenAuthentication
 @csrf_exempt
 @authentication_classes((TokenAuthentication,))
 @api_view(['GET', 'POST'])
-def user_create(request):
+def user_create(request, format=None):
     """
     List all snippets, or create a new snippet.
     """
