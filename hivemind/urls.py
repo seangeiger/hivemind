@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^assets/', asset_views.asset_list),
     url(r'^position/', portfolio_views.position_list),
     url(r'^user/', user_views.user_create),
+    url(r'^status', user_views.status),
 ]
 
 schedule()
