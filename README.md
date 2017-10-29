@@ -1,5 +1,5 @@
 # hivemind
-##A democratic cryptocurrency portfolio.
+## A democratic cryptocurrency portfolio.
 
 Created during HackTX 2017 by [benjaminmaccini](https://github.com/benjaminmaccini), [EvanKaminsky](https://github.com/EvanKaminsky), [bkustar](https://github.com/bkustar), [alexdai186](https://github.com/alexdai186), and [seangeiger](https://github.com/seangeiger).
 
