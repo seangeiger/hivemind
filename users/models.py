@@ -24,6 +24,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         # Create all preferences
         for asset in Asset.objects.all():
             pref = Preference(asset=asset, user=instance, preference=Preference.BEE)
+            pref.save()
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
