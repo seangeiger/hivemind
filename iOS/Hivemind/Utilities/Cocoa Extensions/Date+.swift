@@ -17,6 +17,10 @@ extension Date {
         self.init(timeInterval: 0, since: init_formatter.date(from: input)!)
     }
     
+    init(unixtime: TimeInterval) {
+        self.init(timeIntervalSince1970: unixtime)
+    }
+    
     init(topflight input: String) {
         let init_formatter = DateFormatter()
         init_formatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -32,13 +36,13 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    
     var shortStyle: String {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
         return formatter.string(from: self)
     }
+    
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
