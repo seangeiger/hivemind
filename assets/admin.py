@@ -1,3 +1,6 @@
 from django.contrib import admin
+from assets.models import Asset
 
-# Register your models here.
+class AssetAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Asset, AssetAdmin)
