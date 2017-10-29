@@ -47,6 +47,9 @@ def computePortfolioUpdate():
 def computeAssetDecision(asset, users, totalInvestment):
     totalVote = 0
     for u in users:
+        if(totalInvestment == 0):
+            for u in users:
+                totalInvestment += u.profile.total_investment
         weight = u.profile.total_investment / totalInvestment
         vote = "BEE"
         preferences = Preference.objects.filter(user=u)
@@ -116,7 +119,7 @@ def updateProfileInvestmentValues(portfolio, users, newInvested, newTotal):
     return totalNetTransfers
 
 def updatePositions(positions, desiredInvestments):
-    totalInvestment = 0
+    totalInvestment = Portfolio.objects.get().uninvested
     for a in desiredInvestments:
         totalInvestment += desiredInvestments[a]
 

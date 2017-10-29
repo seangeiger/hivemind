@@ -7,6 +7,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 def schedule():
     sched = BackgroundScheduler()
     #Change to 15 mins
-    sched.add_job(computePortfolioUpdate, 'interval', minutes=1.1)
+    sched.add_job(computePortfolioUpdate, 'interval', minutes=.1)
     sched.add_job(updatePrices, 'interval', minutes=1)
     sched.start()
