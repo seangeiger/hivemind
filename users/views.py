@@ -6,7 +6,7 @@ from rest_framework.parsers import JSONParser
 from users.models import Preference, User, Profile
 from users.serializers import UserSerializer, ProfileSerializer, PreferenceSerializer
 from assets.models import Asset
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.views import APIView
 # Create your views here.
 from rest_framework.authentication import TokenAuthentication
