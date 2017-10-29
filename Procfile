@@ -1,1 +1,1 @@
-web: bin/start-pgbouncer-stunnel gunicorn hivemind.wsgi
+web: python manage.py runserver -p 80
